@@ -2,6 +2,7 @@ import os
 import sys
 
 import customtkinter as ctk
+from PIL import Image
 
 ctk.set_appearance_mode("system")
 ctk.set_default_color_theme("blue")
@@ -31,13 +32,15 @@ class App(ctk.CTk):
             self.iconbitmap(caminho_recurso("SassariIcon.ico"))
         except Exception:
             pass
-        self.geometry("420x560")
+        self.geometry("420x660")
         self.resizable(False, False)
+
+        self._logo()
 
         ctk.CTkLabel(
             self, text="Calculadora de Juros",
-            font=ctk.CTkFont(size=22, weight="bold"),
-        ).pack(pady=(24, 12))
+            font=ctk.CTkFont(size=16),
+        ).pack(pady=(4, 14))
 
         self.tipo = ctk.CTkSegmentedButton(
             self, values=["Juros Simples", "Juros Compostos"]
@@ -74,6 +77,19 @@ class App(ctk.CTk):
         self.res_montante.pack(pady=(4, 14))
 
         self.bind("<Return>", lambda _e: self.calcular())
+
+    def _logo(self):
+        """Mostra o logo no topo. Se o arquivo não existir, segue sem ele."""
+        try:
+            img = Image.open(caminho_recurso("SassariLogo.png"))
+            largura = 280
+            altura = round(largura * img.height / img.width)
+            self.logo = ctk.CTkImage(
+                light_image=img, dark_image=img, size=(largura, altura)
+            )
+            ctk.CTkLabel(self, image=self.logo, text="").pack(pady=(18, 0))
+        except Exception:
+            pass
 
     def _campo(self, rotulo):
         ctk.CTkLabel(self, text=rotulo, anchor="w").pack(padx=40, fill="x")
