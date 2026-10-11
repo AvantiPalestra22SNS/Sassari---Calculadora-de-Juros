@@ -51,7 +51,7 @@ class App(ctk.CTk):
             self.iconbitmap(caminho_recurso("SassariIcon.ico"))
         except Exception:
             pass
-        self.geometry("420x740")
+        self.geometry("420x650")
         self.resizable(False, False)
         self.configure(fg_color=COR_FUNDO)
 
@@ -69,11 +69,11 @@ class App(ctk.CTk):
         ctk.CTkLabel(
             self, text="Calculadora de Juros",
             font=self.f_sub, text_color=COR_TEXTO_SEC,
-        ).pack(pady=(4, 14))
+        ).pack(pady=(4, 10))
 
         self.tipo = ctk.CTkSegmentedButton(
             self, values=["Juros Simples", "Juros Compostos"],
-            font=self.f_botao, height=36,
+            font=self.f_botao, height=34,
             fg_color=COR_BORDA,
             selected_color=(VERDE, "#00894A"),
             selected_hover_color=(VERDE_HOVER, "#007A41"),
@@ -82,22 +82,22 @@ class App(ctk.CTk):
             text_color=(TEXTO_SOBRE_VERDE, "#FFFFFF"),
         )
         self.tipo.set("Juros Simples")
-        self.tipo.pack(pady=(0, 16))
+        self.tipo.pack(pady=(0, 12))
 
         self.capital = self._campo("Capital (R$)")
-        self.taxa = self._campo("Taxa de juros (% ao mês)")
+        self.taxa = self._campo("Taxa de juros (% por período)")
         self.tempo = self._campo("Tempo/período (meses)")
 
         botoes = ctk.CTkFrame(self, fg_color="transparent")
-        botoes.pack(pady=(10, 6))
+        botoes.pack(pady=(8, 4))
         ctk.CTkButton(
             botoes, text="Calcular", command=self.calcular,
-            width=150, height=40, corner_radius=10, font=self.f_botao,
+            width=150, height=38, corner_radius=10, font=self.f_botao,
             fg_color=VERDE, hover_color=VERDE_HOVER, text_color=TEXTO_SOBRE_VERDE,
         ).grid(row=0, column=0, padx=6)
         ctk.CTkButton(
             botoes, text="Limpar", command=self.limpar,
-            width=150, height=40, corner_radius=10, font=self.f_botao,
+            width=150, height=38, corner_radius=10, font=self.f_botao,
             fg_color="transparent", border_width=2, border_color=VERDE,
             text_color=COR_TEXTO, hover_color=("#DDF3E6", "#1F2B26"),
         ).grid(row=0, column=1, padx=6)
@@ -105,17 +105,17 @@ class App(ctk.CTk):
         self.erro = ctk.CTkLabel(
             self, text="", font=self.f_erro, text_color=COR_ERRO, wraplength=340
         )
-        self.erro.pack(pady=(4, 0))
+        self.erro.pack(pady=(2, 0))
 
         quadro = ctk.CTkFrame(
             self, fg_color=COR_CARD, border_width=2,
             border_color=COR_BORDA, corner_radius=14,
         )
-        quadro.pack(padx=40, pady=14, fill="x")
+        quadro.pack(padx=40, pady=10, fill="x")
 
         ctk.CTkLabel(
             quadro, text="Juros", font=self.f_rotulo, text_color=COR_TEXTO_SEC
-        ).pack(pady=(14, 0))
+        ).pack(pady=(12, 0))
         self.res_juros = ctk.CTkLabel(
             quadro, text="R$ —", font=self.f_juros, text_color=COR_TEXTO
         )
@@ -123,11 +123,11 @@ class App(ctk.CTk):
 
         ctk.CTkLabel(
             quadro, text="Montante", font=self.f_rotulo, text_color=COR_TEXTO_SEC
-        ).pack(pady=(10, 0))
+        ).pack(pady=(8, 0))
         self.res_montante = ctk.CTkLabel(
             quadro, text="R$ —", font=self.f_montante, text_color=COR_DESTAQUE
         )
-        self.res_montante.pack(pady=(0, 14))
+        self.res_montante.pack(pady=(0, 12))
 
         self.chave_tema = ctk.CTkSwitch(
             self, text="Modo escuro", command=self._alternar_tema,
@@ -135,7 +135,7 @@ class App(ctk.CTk):
         )
         if ctk.get_appearance_mode() == "Dark":
             self.chave_tema.select()
-        self.chave_tema.pack(pady=(4, 16))
+        self.chave_tema.pack(pady=(2, 12))
 
         self.bind("<Return>", lambda _e: self.calcular())
 
@@ -143,12 +143,12 @@ class App(ctk.CTk):
         """Mostra o logo no topo. Se o arquivo não existir, segue sem ele."""
         try:
             img = Image.open(caminho_recurso("SassariLogo.png"))
-            largura = 280
+            largura = 220
             altura = round(largura * img.height / img.width)
             self.logo = ctk.CTkImage(
                 light_image=img, dark_image=img, size=(largura, altura)
             )
-            ctk.CTkLabel(self, image=self.logo, text="").pack(pady=(18, 0))
+            ctk.CTkLabel(self, image=self.logo, text="").pack(pady=(12, 0))
         except Exception:
             pass
 
@@ -158,11 +158,11 @@ class App(ctk.CTk):
             font=self.f_rotulo, text_color=COR_TEXTO_SEC,
         ).pack(padx=40, fill="x")
         entrada = ctk.CTkEntry(
-            self, width=340, height=38, font=self.f_entrada,
+            self, width=340, height=34, font=self.f_entrada,
             corner_radius=10, border_width=2,
             fg_color=COR_CARD, border_color=COR_BORDA, text_color=COR_TEXTO,
         )
-        entrada.pack(padx=40, pady=(2, 12))
+        entrada.pack(padx=40, pady=(2, 8))
         return entrada
 
     def _alternar_tema(self):
