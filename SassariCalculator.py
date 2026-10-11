@@ -1,3 +1,6 @@
+import os
+import sys
+
 import customtkinter as ctk
 
 ctk.set_appearance_mode("system")
@@ -17,7 +20,12 @@ def formata(valor):
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Sassari Calculator")
+                self.title("Sassari Calculator")
+        base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+        try:
+            self.iconbitmap(os.path.join(base, "SassariIcon.ico"))
+        except Exception:
+            pass
         self.geometry("420x560")
         self.resizable(False, False)
 
