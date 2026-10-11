@@ -1,16 +1,62 @@
-name: Build exe
-on: [push, workflow_dispatch]
+name: Build exe e instalador
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+
       - run: pip install pyinstaller customtkinter pillow
+
       - run: pyinstaller --onefile --windowed --icon SassariIcon.ico --add-data "SassariIcon.ico;." --add-data "SassariLogo.png;." --collect-all customtkinter --name SassariCalculator SassariCalculator.py
+
+      - name: Garantir o Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y --no-progress
+          }
+          if (-not (Test-Path $iscc)) { throw "ISCC.exe nao encontrado" }
+
+      - name: Compilar o instalador
+        shell: pwsh
+        run: |
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" SassariCalculator.iss
+
       - uses: actions/upload-artifact@v6
         with:
           name: SassariCalculator-exe
           path: dist/SassariCalculator.exe
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: SassariCalculator-Setup
+          path: Output/SassariCalculator-Setup.exe
+
+      - name: Anexar o instalador a uma release (somente em tags v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $arquivo = "Output/SassariCalculator-Setup.exe"
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $arquivo --clobber
+          } else {
+            gh release create $tag $arquivo --title "Sassari Calculator $tag" --generate-notes
+          }
