@@ -85,8 +85,8 @@ class App(ctk.CTk):
         self.tipo.pack(pady=(0, 16))
 
         self.capital = self._campo("Capital (R$)")
-        self.taxa = self._campo("Taxa de juros (% por período)")
-        self.tempo = self._campo("Tempo (nº de períodos)")
+        self.taxa = self._campo("Taxa de juros (% ao mês)")
+        self.tempo = self._campo("Tempo/período (meses)")
 
         botoes = ctk.CTkFrame(self, fg_color="transparent")
         botoes.pack(pady=(10, 6))
