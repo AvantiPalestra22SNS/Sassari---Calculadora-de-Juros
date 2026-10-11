@@ -8,8 +8,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: pip install pyinstaller customtkinter
-      - run: pyinstaller --onefile --windowed --icon SassariIcon.ico --add-data "SassariIcon.ico;." --collect-all customtkinter --name SassariCalculator SassariCalculator.py
+      - run: pip install pyinstaller customtkinter pillow
+      - run: pyinstaller --onefile --windowed --icon SassariIcon.ico --add-data "SassariIcon.ico;." --add-data "SassariLogo.png;." --collect-all customtkinter --name SassariCalculator SassariCalculator.py
       - uses: actions/upload-artifact@v6
         with:
           name: SassariCalculator-exe
