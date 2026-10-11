@@ -17,13 +17,18 @@ def formata(valor):
     return f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def caminho_recurso(nome):
+    """Localiza arquivos tanto rodando o .py quanto dentro do .exe."""
+    base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, nome)
+
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-                self.title("Sassari Calculator")
-        base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+        self.title("Sassari Calculator")
         try:
-            self.iconbitmap(os.path.join(base, "SassariIcon.ico"))
+            self.iconbitmap(caminho_recurso("SassariIcon.ico"))
         except Exception:
             pass
         self.geometry("420x560")
@@ -111,4 +116,3 @@ class App(ctk.CTk):
 
 if __name__ == "__main__":
     App().mainloop()
-
