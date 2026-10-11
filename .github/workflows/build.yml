@@ -8,9 +8,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyinstaller
-      - run: pyinstaller --onefile --name SassariCalculator SassariCalculator.py
+      - run: pip install pyinstaller customtkinter
+      - run: pyinstaller --onefile --windowed --collect-all customtkinter --name SassariCalculator SassariCalculator.py
       - uses: actions/upload-artifact@v4
         with:
           name: SassariCalculator-exe
           path: dist/SassariCalculator.exe
+ 
